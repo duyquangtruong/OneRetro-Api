@@ -41,7 +41,7 @@ const connectDatabase = () => {
           "Failed to connect to Database, retrying in 2 seconds",
           err
         );
-        // setTimeout(connectDatabase, 2000);
+        setTimeout(connectDatabase, 2000);
       } else {
         console.log("Connect Successfully !");
       }
