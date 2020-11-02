@@ -4,7 +4,7 @@ const router = express.Router();
 const Board = require("../../models/boards.model");
 
 /* GET home page. */
-router.get("/", cors(), async function (req, res, next) {
+router.get("/", async function (req, res, next) {
   const Boards = await Board.find();
   res.json(Boards);
 });

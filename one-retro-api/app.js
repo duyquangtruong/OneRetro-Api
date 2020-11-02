@@ -4,8 +4,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
-const usersRouter = require("./routes/users");
-
 const mongoose = require("mongoose");
 const Uri =
   "mongodb+srv://admin:admin@duycluster.mybdc.mongodb.net/OneRetroDB?retryWrites=true&w=majority";
@@ -22,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/users", usersRouter);
+app.use("/login", require("./routes/login/index"));
 app.use("/boards", require("./routes/boards/index"));
 app.use(require("cors"));
 
@@ -41,7 +39,7 @@ const connectDatabase = () => {
           "Failed to connect to Database, retrying in 2 seconds",
           err
         );
-        // setTimeout(connectDatabase, 2000);
+        setTimeout(connectDatabase, 2000);
       } else {
         console.log("Connect Successfully !");
       }
