@@ -15,6 +15,7 @@ const userSchema = new Schema(
       maxlength: 50,
       required: true,
     },
+    createdAt: { type: Date },
   },
   { versionKey: false }
 );
