@@ -8,7 +8,7 @@ const boardSchema = new Schema(
       maxlength: 255,
       required: true,
     },
-    discription: {
+    description: {
       type: String,
       maxlength: 255,
     },
