@@ -19,14 +19,21 @@ router.post("/create", async function (req, res, next) {
     createdBy: req.body.createdBy,
   };
 
-  const result = await Board.create(newBoard, (err, doc) => {
+  let isSuccess = false;
+  await Board.create(newBoard, (err, doc) => {
     if (err) {
       console.log(err);
-      res.json({ result: 400 });
-      return;
     } else {
-      res.json({ result: 201 });
-      return;
+      isSuccess = true;
     }
   });
+
+  if (isSuccess) {
+    const boardlist = await Board.find();
+    res.json({ result: 201, boardlist: boardlist });
+    return;
+  } else {
+    res.json({ result: 400 });
+    return;
+  }
 });
