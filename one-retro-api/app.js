@@ -24,6 +24,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/login", require("./routes/login/index"));
 app.use("/boards", require("./routes/boards/index"));
+app.use("/users", require("./routes/users/index"));
 
 //Create connection to database
 const connectDatabase = () => {

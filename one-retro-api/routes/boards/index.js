@@ -2,38 +2,41 @@ const express = require("express");
 const cors = require("cors");
 const router = express.Router();
 const Board = require("../../models/boards.model");
+const { response } = require("../../app");
 
 /* GET home page. */
-router.get("/", cors(), async function (req, res, next) {
-  const Boards = await Board.find();
+router.post("/", async function (req, res, next) {
+  const Boards = await Board.find(
+    { createdBy: req.body.createdBy },
+    (error, response) => {
+      if (error) {
+        res.json([{}]);
+        return;
+      }
+    }
+  );
   res.json(Boards);
 });
 
 module.exports = router;
 
 router.post("/create", async function (req, res, next) {
+  console.log(req.body);
   const newBoard = {
     name: req.body.name,
     description: req.body.description,
-    createAt: req.body.createdAt,
     createdBy: req.body.createdBy,
   };
 
-  let isSuccess = false;
   await Board.create(newBoard, (err, doc) => {
     if (err) {
       console.log(err);
+      res.json({ result: 400 });
+      return;
     } else {
-      isSuccess = true;
+      Board.find().then((response) =>
+        res.json({ result: 201, boardList: response })
+      );
     }
   });
-
-  if (isSuccess) {
-    const boardlist = await Board.find();
-    res.json({ result: 201, boardlist: boardlist });
-    return;
-  } else {
-    res.json({ result: 400 });
-    return;
-  }
 });

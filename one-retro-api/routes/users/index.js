@@ -2,8 +2,16 @@ const express = require("express");
 const router = express.Router();
 const User = require("../../models/users.model");
 
-router.get("/", function (req, res, next) {
-  res.send("respond with a resource");
+router.post("/", async function (req, res, next) {
+  const userId = req.body._id;
+  const resUserInfo = await User.findOne({ _id: userId }, (error, response) => {
+    if (error) {
+      res.json({ result: 400 });
+      return;
+    }
+  });
+  console.log(resUserInfo);
+  res.json({ result: 200, userInfo: resUserInfo });
 });
 
 router.post("/update", async function (req, res, next) {
