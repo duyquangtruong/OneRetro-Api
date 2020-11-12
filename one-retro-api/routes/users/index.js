@@ -10,7 +10,6 @@ router.post("/", async function (req, res, next) {
       return;
     }
   });
-  console.log(resUserInfo);
   res.json({ result: 200, userInfo: resUserInfo });
 });
 
