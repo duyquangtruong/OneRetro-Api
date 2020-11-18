@@ -42,9 +42,10 @@ router.post("/create", async function (req, res, next) {
   });
 });
 
-router.post("/detail", async function (req, res, next) {
-  let wentWell = await Card.find(
-    { boardBelongTo: req.body.boardBelongTo, type: CARD_TYPE_WENTWELL },
+router.get("/detail/:boardId", async function (req, res, next) {
+  console.log(req.params.boardId);
+  const wentWell = await Card.find(
+    { boardBelongTo: req.params.boardId, type: CARD_TYPE_WENTWELL },
     (error, response) => {
       if (error) {
         console.log(error);
@@ -53,8 +54,8 @@ router.post("/detail", async function (req, res, next) {
     }
   );
 
-  let toImprove = await Card.find(
-    { boardBelongTo: req.body.boardBelongTo, type: CARD_TYPE_TOIMPROVE },
+  const toImprove = await Card.find(
+    { boardBelongTo: req.params.boardId, type: CARD_TYPE_TOIMPROVE },
     (error, response) => {
       if (error) {
         console.log(error);
@@ -63,8 +64,8 @@ router.post("/detail", async function (req, res, next) {
     }
   );
 
-  let actionItems = await Card.find(
-    { boardBelongTo: req.body.boardBelongTo, type: CARD_TYPE_ACTIONITEMS },
+  const actionItems = await Card.find(
+    { boardBelongTo: req.params.boardId, type: CARD_TYPE_ACTIONITEMS },
     (error, response) => {
       if (error) {
         console.log(error);
@@ -73,10 +74,32 @@ router.post("/detail", async function (req, res, next) {
     }
   );
 
+  console.log(wentWell);
+  console.log(toImprove);
+  console.log(actionItems);
   res.json({
     wentWellCards: wentWell,
     toImproveCards: toImprove,
     actionItemsCards: actionItems,
+  });
+});
+
+router.post("/detail/newcard", async (req, res, next) => {
+  const newCard = {
+    type: req.body.type,
+    content: req.body.content,
+    boardBelongTo: req.body.boardBelongTo,
+    createdBy: req.body.createdBy,
+    createdAt: req.body.createdAt,
+  };
+  const result = Card.create(newCard, (error, document) => {
+    if (error) {
+      console.log(err);
+      res.json({ result: 400 });
+      return;
+    } else {
+      res.json({ result: 201 });
+    }
   });
 });
 
