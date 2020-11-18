@@ -2,6 +2,7 @@ const { Schema, model } = require("mongoose");
 
 const cardSchema = new Schema(
   {
+    type: { type: Number },
     content: {
       type: String,
       minlength: 1,
